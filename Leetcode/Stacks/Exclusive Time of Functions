@@ -1,0 +1,41 @@
+class Solution {
+    class Pair {
+        int id;
+        int start;
+        Pair(int id, int start){
+            this.id = id;
+            this.start = start;
+        }
+    }
+
+    public int[] exclusiveTime(int n, List<String> logs) {
+        Stack<Pair> st = new Stack<>();
+        int[] ans = new int[n];
+        
+        for(String s : logs){
+            String[] parts = s.split(":");
+            int id = Integer.parseInt(parts[0]);
+            String type = parts[1];
+            int time = Integer.parseInt(parts[2]);
+
+            if(type.equals("start")){
+                // pause current function
+                if(!st.isEmpty()){
+                    ans[st.peek().id] += time - st.peek().start;
+                }
+                st.push(new Pair(id, time));
+            }
+            else{ // end
+                Pair p = st.pop();
+                ans[p.id] += time - p.start + 1;
+                
+                // resume previous function
+                if(!st.isEmpty()){
+                    st.peek().start = time + 1;
+                }
+            }
+        }
+        
+        return ans;
+    }
+}
