@@ -1,0 +1,50 @@
+class Solution {
+    public int getMaxArea(int arr[]) {
+        int n = arr.length;
+        Stack<Integer> st = new Stack<>();
+        int[] pse = new int[n];
+        pse[0] = -1;
+        st.push(0);
+        for(int i = 1 ; i < n ; i++){
+            while(!st.isEmpty() && arr[st.peek()] >= arr[i]) st.pop();
+            if(st.isEmpty()) pse[i] = -1;
+            else pse[i] = st.peek();
+            st.push(i);
+        }
+        Stack<Integer> gt = new Stack<>();
+        int[] nse = new int[n];
+        nse[n - 1] = n;
+        gt.push(n - 1);
+        for(int i = n - 2 ; i >= 0 ; i--){
+            while(!gt.isEmpty() && arr[gt.peek()] >= arr[i]) gt.pop();
+            if(gt.isEmpty()) nse[i] = n;
+            else nse[i] = gt.peek();
+            gt.push(i);
+        }
+        int max = 0;
+        for(int i = 0 ; i < n ; i++){
+            int cur = (nse[i] - pse[i] - 1) * arr[i];
+            if(cur > max) max = cur;
+        }
+        return max;
+        
+    }
+    public int maximalRectangle(char[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] mat = new int[m][n];
+        for(int i = 0 ; i < m ; i++){
+            for(int j = 0 ; j < n ; j++){
+                mat[i][j] = matrix[i][j]- '0'; // ASCII value of 0 is 48
+            }
+        }
+        for(int i = 1 ; i < m ; i++){
+            for(int j = 0 ; j < n ; j++) if(mat[i][j] != 0) mat[i][j] += mat[i-1][j];
+        }
+        int max = 0;
+        for(int[] row : mat){
+            max = Math.max(getMaxArea(row),max);
+        }
+        return max;
+    }
+}
