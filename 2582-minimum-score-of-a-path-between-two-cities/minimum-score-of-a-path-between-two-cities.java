@@ -8,15 +8,18 @@ class Solution {
         }
     }
     public int bfs(ArrayList<ArrayList<Pair>> adj, boolean[] vis, int i){
-        Queue<Pair> q = new LinkedList<>();
-        q.add(new Pair(1,-1));
+        Queue<Integer> q = new LinkedList<>();
+        q.add(i);
+        vis[i] = true;
         int min = Integer.MAX_VALUE;
         while(!q.isEmpty()){
-            Pair front = q.remove();
-            vis[front.node] = true;
-            for(Pair ele : adj.get(front.node)){
+            int front = q.remove();
+            for(Pair ele : adj.get(front)){
                 min = Math.min(ele.wt,min);
-                if(!vis[ele.node]) q.add(new Pair(ele.node,ele.wt));
+                if(!vis[ele.node]){
+                    vis[ele.node] = true;
+                    q.add(ele.node);
+                }
             }
         }
         return min;
