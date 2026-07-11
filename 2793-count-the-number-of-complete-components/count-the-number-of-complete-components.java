@@ -24,13 +24,11 @@ class Solution {
         return ans;
     }
     public void dfs(ArrayList<ArrayList<Integer>> adj, boolean[] vis, int i, int[] deg, int[] nodes, int[] degSum){
+        vis[i] = true;
+        nodes[0]++;
+        degSum[0] += deg[i];
         for(int ele : adj.get(i)){
-            if(!vis[ele]){
-                vis[ele] = true;
-                nodes[0]++;
-                degSum[0] += deg[ele];
-                dfs(adj,vis,ele,deg,nodes,degSum);
-            }
+            if(!vis[ele]) dfs(adj,vis,ele,deg,nodes,degSum);
         }
     }
 }
