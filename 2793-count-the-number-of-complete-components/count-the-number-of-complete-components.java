@@ -2,34 +2,35 @@ class Solution {
     public int countCompleteComponents(int n, int[][] edges) {
         ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
         for(int i = 0; i < n; i++) adj.add(new ArrayList<>());
+        int[] deg = new int[n];
         for(int[] ele : edges){
             adj.get(ele[0]).add(ele[1]);
             adj.get(ele[1]).add(ele[0]);
+            deg[ele[0]]++;
+            deg[ele[1]]++;
         }
-        int[] vis = new int[n];
+        boolean[] vis = new boolean[n];
         int ans = 0;
+        int[] nodes = new int[1];
+        int[] degSum = new int[1];
         for(int i = 0; i < n; i++){
-            if(vis[i] == 0){
-                dfs(adj,vis,i);
-                HashSet<Integer> set = new HashSet<>();
-                for(int j = 0; j < n; j++){
-                    if(vis[j] == 1){
-                        set.add(j);
-                        vis[j] = 2;
-                    }
-                }
-                int countedges = 0;
-                int m = set.size();
-                for(int[] ele : edges) if(set.contains(ele[0]) || set.contains(ele[1])) countedges++;
-                if(countedges == (m * (m - 1)) / 2) ans++;
+            if(!vis[i]){
+                nodes[0] = 0;
+                degSum[0] = 0;
+                dfs(adj,vis,i,deg,nodes,degSum);
+                if((degSum[0] / 2) == (nodes[0] * (nodes[0] - 1) / 2)) ans++;
             }
         }
         return ans;
     }
-    public void dfs(ArrayList<ArrayList<Integer>> adj, int[] vis, int i){
-        vis[i] = 1;
+    public void dfs(ArrayList<ArrayList<Integer>> adj, boolean[] vis, int i, int[] deg, int[] nodes, int[] degSum){
         for(int ele : adj.get(i)){
-            if(vis[ele] == 0) dfs(adj,vis,ele);
+            if(!vis[ele]){
+                vis[ele] = true;
+                nodes[0]++;
+                degSum[0] += deg[ele];
+                dfs(adj,vis,ele,deg,nodes,degSum);
+            }
         }
     }
 }
