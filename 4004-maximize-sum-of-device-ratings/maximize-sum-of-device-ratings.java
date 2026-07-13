@@ -10,9 +10,10 @@ class Solution {
         for(int[] ele : units) Arrays.sort(ele);
         int firstMin = units[0][0];
         int secMin = units[0][1];
-        for(int i = 1; i < m; i++){
-            firstMin = Math.min(firstMin,units[i][0]);
-            secMin = Math.min(secMin,units[i][1]);
+        for(int[] ele : units){
+            Arrays.sort(ele);
+            firstMin = Math.min(firstMin,ele[0]);
+            secMin = Math.min(secMin,ele[1]);
         }
         int count = 0;
         rating += firstMin;
