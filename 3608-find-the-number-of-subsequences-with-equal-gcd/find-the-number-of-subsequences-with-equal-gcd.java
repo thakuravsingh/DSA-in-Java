@@ -1,6 +1,9 @@
 class Solution {
-    public int gcd(int a, int b) {
-        return b == 0 ? a : gcd(b, a % b);
+    public int gcd(int a, int b){
+        int min=Math.min(a,b);
+        int max=Math.max(a,b);
+        if(min==0) return max;
+        return gcd(min,max%min);
     }
     public int helper(int[] nums, int i, int first, int sec, int[][][] dp){
         if(i == nums.length){
@@ -17,7 +20,7 @@ class Solution {
     }
     public int subsequencePairCount(int[] nums) {
         int n = nums.length;
-        int[][][] dp = new int[n+1][201][201];
+        int[][][] dp = new int[n][201][201];
         for(int i = 0; i < n; i++){
             for(int j = 0; j < 201; j++) Arrays.fill(dp[i][j],-1);
         }
