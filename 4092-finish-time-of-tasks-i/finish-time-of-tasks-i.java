@@ -6,23 +6,28 @@ class Solution {
             int u = ele[0];
             int v = ele[1];
             adj.get(u).add(v);
+            adj.get(v).add(u);
         }
+        boolean[] vis = new boolean[n];
         long[] finish = new long[n];
-        dfs(adj,0,baseTime,finish);
+        dfs(adj,vis,0,baseTime,finish);
         return finish[0];
     }
-    public void dfs(ArrayList<ArrayList<Integer>> adj, int i, int[] baseTime, long[] finish){
-        if(adj.get(i).isEmpty()){
-            finish[i]=baseTime[i];
-            return;
-        }
+    public void dfs(ArrayList<ArrayList<Integer>> adj, boolean[] vis, int i, int[] baseTime, long[] finish){
+        vis[i] = true;
+        boolean isLeaf = true;
         long latest = Long.MIN_VALUE;
         long earliest = Long.MAX_VALUE;
         for(int ele : adj.get(i)){
-            dfs(adj,ele,baseTime,finish);
-            latest = Math.max(latest,finish[ele]);
-            earliest = Math.min(earliest,finish[ele]);
+            if(!vis[ele]){
+                isLeaf = false;
+                dfs(adj,vis,ele,baseTime,finish);
+                latest = Math.max(latest,finish[ele]);
+                earliest = Math.min(earliest,finish[ele]);
+            }
         }
-        finish[i] = latest + (latest - earliest) + baseTime[i];
+        if(isLeaf) finish[i] = baseTime[i];
+        else finish[i] = (latest - earliest) + baseTime[i] + latest;
+        
     }
 }
