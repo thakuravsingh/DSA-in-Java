@@ -15,7 +15,7 @@ class Solution {
         if(dp[i][person][M] != -1) return dp[i][person][M];
         int stone = 0;
         int res = (person == 1) ? -1 : Integer.MAX_VALUE;
-        for(int x = 1; x <= (2 * M); x++){
+        for(int x = 1; x <= Math.min(2 * M, n - i); x++){
             if((i+x-1) < n) stone += piles[i+x-1];
             if(person == 1) res = Math.max(res, stone + helper(i+x,0,piles,Math.max(M,x),dp));
             else res = Math.min(res, helper(i+x,1,piles,Math.max(M,x),dp));
