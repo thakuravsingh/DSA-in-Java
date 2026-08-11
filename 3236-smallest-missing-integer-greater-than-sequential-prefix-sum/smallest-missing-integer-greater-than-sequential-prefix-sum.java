@@ -6,11 +6,12 @@ class Solution {
             if(nums[i] - nums[i-1] == 1) sum += nums[i];
             else break;
         }
+        HashSet<Integer> set = new HashSet<>();
+        for(int ele : nums) set.add(ele);
         int ans = sum;
-        Arrays.sort(nums);
-        for(int ele : nums){
-            if(ele == ans) ans++;
-            if(ele > ans) break;
+        while(true){
+            if(set.contains(ans)) ans++;
+            else break;
         }
         return ans;
     }
