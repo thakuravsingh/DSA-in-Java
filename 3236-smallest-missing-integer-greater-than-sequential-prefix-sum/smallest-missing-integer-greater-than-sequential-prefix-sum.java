@@ -6,11 +6,12 @@ class Solution {
             if(nums[i] - nums[i-1] == 1) sum += nums[i];
             else break;
         }
-        HashSet<Integer> set = new HashSet<>();
-        for(int ele : nums) set.add(ele);
+        int[] freq = new int[51];
+        for(int i = 0; i < n; i++) freq[nums[i]]++;
         int ans = sum;
         while(true){
-            if(set.contains(ans)) ans++;
+            if(ans > 50) return ans;
+            if(freq[ans] > 0) ans++;
             else break;
         }
         return ans;
