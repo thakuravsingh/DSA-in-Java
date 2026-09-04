@@ -25,7 +25,11 @@ class Solution {
     }
     public int numberOfWays(int n, int x) {
         long[] nums = new long[n+1];
-        for(int i = 1; i <= n; i++) nums[i] = pow(i,x);
+        for(int i = 1; i <= n; i++){
+            long val = pow(i, x);
+            if(val > n) break;
+            nums[i] = val;
+        }
         dp = new int[n+1][n+1];
         for(int i = 0; i <= n; i++) Arrays.fill(dp[i],-1);;
         return fxn(nums,1,n);
