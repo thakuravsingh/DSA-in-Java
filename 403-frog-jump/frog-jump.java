@@ -1,8 +1,11 @@
 class Solution {
     Boolean[][] dp;
+    HashMap<Integer,Integer> map;
     public boolean canCross(int[] stones) {
         if(stones[1]-stones[0] != 1) return false;
         int n = stones.length;
+        map = new HashMap<>();
+        for(int i = 0; i < n; i++) map.put(stones[i],i);
         dp = new Boolean[n+1][2001];
         return helper(1,1,stones);
     }
@@ -12,36 +15,10 @@ class Solution {
         if(dp[i][j] != null) return dp[i][j];
         boolean a = false,b = false,c = false;
         if(j != 1){
-            boolean flag = false;
-            int idx;
-            for(idx = i + 1; idx < n; idx++) {
-                if(stones[idx] == stones[i] + j - 1){
-                    flag = true;
-                    break;
-                }
-                else if(stones[idx] > stones[i] + j - 1) break;
-            }
-            if(flag) a = helper(idx,j-1,stones);
+            if(map.containsKey(stones[i]+j-1)) a = helper(map.get(stones[i]+j-1),j-1,stones);
         }
-        boolean flag = false;
-        int idx;
-        for(idx = i + 1; idx < n; idx++) {
-            if(stones[idx] == stones[i] + j){
-                flag = true;
-                break;
-            }
-            else if(stones[idx] > stones[i] + j) break;
-        }
-        if(flag) b = helper(idx,j,stones);
-        flag = false;
-        for(idx = i + 1; idx < n; idx++) {
-            if(stones[idx] == stones[i] + j + 1){
-                flag = true;
-                break;
-            }
-            else if(stones[idx] > stones[i] + j + 1) break;
-        }
-        if(flag) c = helper(idx,j+1,stones);
+        if(map.containsKey(stones[i]+j)) b = helper(map.get(stones[i]+j),j,stones);
+        if(map.containsKey(stones[i]+j+1)) c = helper(map.get(stones[i]+j+1),j+1,stones);
         return dp[i][j] = a || b || c;
     }
 }
