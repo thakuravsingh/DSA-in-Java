@@ -1,21 +1,25 @@
 class Solution {
-    Boolean[][] dp;
     public boolean canPartition(int[] nums) {
         int sum = 0;
         for(int ele : nums) sum += ele;
         if(sum % 2 != 0) return false;
         int n = nums.length;
-        dp = new Boolean[n+1][sum/2+1];
-        return isPossible(nums,0,sum/2);
-    }
-    public boolean isPossible(int[] nums, int i, int tgt){
-        if(i == nums.length) return false;
-        if(tgt == 0) return true;
-        if(dp[i][tgt] != null) return dp[i][tgt];
-        boolean skip = isPossible(nums,i+1,tgt);
-        boolean pick = false;
-        if(tgt >= nums[i]) pick = isPossible(nums,i+1,tgt-nums[i]);
-        boolean ans = skip || pick;
-        return dp[i][tgt] = ans;
+        int tgt = sum/2;
+        boolean[][] dp = new boolean[n][tgt+1];
+        for(int i = 0; i < n; i++) dp[i][0] = true;
+        for(int j = 1; j <= tgt; j++){
+            if(nums[0] == j){
+                dp[0][j] = true;
+                break;
+            }
+        }
+        for(int i = 1; i < n; i++){
+            for(int j = 1; j <= tgt; j++) {
+                boolean skip = dp[i - 1][j];
+                boolean pick = (j >= nums[i] && dp[i - 1][j - nums[i]]);
+                dp[i][j] = skip || pick;
+            }
+        }
+        return dp[n-1][tgt];
     }
 }
