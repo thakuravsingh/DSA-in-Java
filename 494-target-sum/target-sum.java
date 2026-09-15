@@ -1,9 +1,8 @@
 class Solution {
-    int [][] dp;
+    HashMap<String,Integer> map;
     public int findTargetSumWays(int[] nums, int target) {
         int n = nums.length;
-        dp = new int[n][2001];
-        for(int i = 0; i < n; i++) Arrays.fill(dp[i],-1);
+        map = new HashMap<>();
         return findWays(nums,target,0,0);
     }
     public int findWays(int[] nums, int tgt, int i, int cur){
@@ -12,9 +11,12 @@ class Solution {
             if(cur == tgt) return 1;
             else return 0;
         }
-        if(dp[i][cur+1000]!=-1) return dp[i][cur+1000];
+        String s = i + "," + cur;
+        if(map.containsKey(s)) return map.get(s);
         int minus = findWays(nums,tgt,i+1,cur-nums[i]);
         int add = findWays(nums,tgt,i+1,cur+nums[i]);
-        return dp[i][cur+1000] = minus+add;
+        int tot = minus+add;
+        map.put(s,tot);
+        return tot;
     }
 }
