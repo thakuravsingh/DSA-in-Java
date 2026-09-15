@@ -1,22 +1,16 @@
 class Solution {
-    HashMap<String,Integer> map;
-    public int findTargetSumWays(int[] nums, int target) {
+    public int findTargetSumWays(int[] nums, int tgt) {
         int n = nums.length;
-        map = new HashMap<>();
-        return findWays(nums,target,0,0);
-    }
-    public int findWays(int[] nums, int tgt, int i, int cur){
-        int n = nums.length;
-        if(i == n){
-            if(cur == tgt) return 1;
-            else return 0;
+        int[][] dp = new int[n][2001];
+        dp[0][nums[0] + 1000] = 1;
+        dp[0][-nums[0] + 1000] += 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= 2000; j++) {
+                int plus = (j - nums[i] >= 0) ? dp[i-1][j-nums[i]] : 0;
+                int minus = (j + nums[i] <= 2000) ? dp[i-1][j + nums[i]] : 0;
+                dp[i][j] = plus + minus;
+            }
         }
-        String s = i + "," + cur;
-        if(map.containsKey(s)) return map.get(s);
-        int minus = findWays(nums,tgt,i+1,cur-nums[i]);
-        int add = findWays(nums,tgt,i+1,cur+nums[i]);
-        int tot = minus+add;
-        map.put(s,tot);
-        return tot;
+        return dp[n-1][tgt+1000];
     }
 }
