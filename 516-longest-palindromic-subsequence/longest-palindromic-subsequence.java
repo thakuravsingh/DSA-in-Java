@@ -1,16 +1,19 @@
 class Solution {
-    int[][] dp;
     public int longestPalindromeSubseq(String s) {
         int n = s.length();
-        dp = new int[n+1][n+1];
-        for(int i = 0; i <= n; i++) Arrays.fill(dp[i],-1);
-        return getMaxLen(s,0,n-1);
-    }
-    public int getMaxLen(String s, int i, int j){
-        if(i > j) return 0;
-        if(i == j) return 1;
-        if(dp[i][j] != -1) return dp[i][j];
-        if(s.charAt(i) == s.charAt(j)) return 2 + getMaxLen(s,i+1,j-1);
-        else return dp[i][j] = Math.max(getMaxLen(s,i+1,j),getMaxLen(s,i,j-1));
+        int[][] dp = new int[n][n];
+        for(int i = 0; i < n; i++) dp[i][i] = 1;
+        int i = 0;
+        for(int j = 1; j < n; j++){
+            int k = j;
+            while(k < n){
+                if(s.charAt(i) == s.charAt(k)) dp[i][k] = 2  + dp[i+1][k-1];
+                else dp[i][k] = Math.max(dp[i+1][k],dp[i][k-1]);
+                i++;
+                k++;
+            }
+            i = 0;
+        }
+        return dp[0][n-1];
     }
 }
