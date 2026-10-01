@@ -1,0 +1,26 @@
+class Solution {
+    public boolean isSameType(char a , char b){
+        if(a == '(' && b == ')') return true;
+        else if(a == '{' && b == '}') return true;
+        else if(a == '[' && b == ']') return true;
+        else return false;
+    }
+    public boolean isValid(String str) {
+        Stack<Character> st = new Stack<>();
+        int n = str.length();
+        int i = 0;
+        if(n % 2 == 1) return false;
+        while(i < str.length()){
+            char ch = str.charAt(i);
+            if(ch =='(' || ch =='[' || ch =='{') st.push(ch);
+            else{
+                if(st.isEmpty()) return false;
+                char top = st.peek();
+                if(isSameType(top,ch)) st.pop();
+                else return false;
+            }
+            i++;
+        }
+        return (st.isEmpty());
+    }
+}
