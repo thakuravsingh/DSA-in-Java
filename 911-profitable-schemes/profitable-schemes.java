@@ -3,9 +3,7 @@ class Solution {
     int[][][] dp;
     public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
         int len = group.length;
-        int maxProfit = 0;
-        for(int ele : profit) maxProfit += ele;
-        dp = new int[len+1][n+1][maxProfit+1];
+        dp = new int[len+1][n+1][minProfit+1];
         for(int i = 0; i <= len; i++){
             for(int j = 0; j <= n; j++) Arrays.fill(dp[i][j],-1);
         }
@@ -19,7 +17,7 @@ class Solution {
         if(dp[i][curMember][curProfit] != -1) return dp[i][curMember][curProfit];
         long skip = totalNum(n,minProfit,group,profit,i+1,curMember,curProfit);
         long pick = (n >= curMember+group[i]) ? (minProfit <= curProfit+profit[i] ?
-                1 + totalNum(n,minProfit,group,profit,i+1,curMember+group[i],curProfit+profit[i]) :
+                1 + totalNum(n,minProfit,group,profit,i+1,curMember+group[i],minProfit) :
                 totalNum(n,minProfit,group,profit,i+1,curMember+group[i],curProfit+profit[i])) : 0;
         return dp[i][curMember][curProfit] = (int)(skip+pick) % mod;
     }
