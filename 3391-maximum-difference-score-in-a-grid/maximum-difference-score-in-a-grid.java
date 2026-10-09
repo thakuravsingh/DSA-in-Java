@@ -4,7 +4,7 @@ class Solution {
         int m = grid.size();
         int n = grid.getFirst().size();
         dp = new int[m+1][n+1];
-        for(int i = 0; i <= m; i++) Arrays.fill(dp[i],-1);
+        for(int i = 0; i <= m; i++) Arrays.fill(dp[i],Integer.MIN_VALUE);
         int max = Integer.MIN_VALUE;
         for(int i = 0; i < m; i++){
             for(int j = 0; j < n; j++){
@@ -17,7 +17,7 @@ class Solution {
         int m = grid.size();
         int n = grid.getFirst().size();
         if(i == m || j == n) return -(int)1e9;
-        if(dp[i][j] != -1) return dp[i][j];
+        if(dp[i][j] != Integer.MIN_VALUE) return dp[i][j];
         int r = (j + 1 < n) ? grid.get(i).get(j+1) - grid.get(i).get(j) : -(int)1e9;
         int d = (i + 1 < m) ? grid.get(i+1).get(j) - grid.get(i).get(j) : -(int)1e9;
         int right = getMax(grid,i,j+1);
