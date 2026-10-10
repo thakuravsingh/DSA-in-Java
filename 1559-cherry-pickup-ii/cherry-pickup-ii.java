@@ -1,30 +1,29 @@
 class Solution {
-    int[][][] dp;
     public int cherryPickup(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
-        dp = new int[m+1][n+1][n+1];
-        for(int i = 0; i <= m; i++){
-            for(int j = 0; j <= n; j++) Arrays.fill(dp[i][j],-1);
-        }
-        return maxCherry(grid,0,0,n-1);
-    }
-    public int maxCherry(int[][] grid, int row, int col1, int col2){
-        int m = grid.length;
-        int n = grid[0].length;
-        if(row == m - 1) return (col1 != col2) ? grid[row][col1] + grid[row][col2] : grid[row][col1];
-        if(dp[row][col1][col2]!=-1) return dp[row][col1][col2];
-        int ans = -1;
-        int pick = (col1 != col2) ? grid[row][col1] + grid[row][col2] : grid[row][col1];
-        for(int val1 = -1; val1 <= 1; val1++){
-            int newC1 = col1 + val1;
-            if(newC1 < 0 || newC1 >= n) continue;
-            for(int val2 = -1; val2 <= 1; val2++){
-                int newC2 = col2 + val2;
-                if(newC2 < 0 || newC2 >= n) continue;
-                ans = Math.max(ans,maxCherry(grid,row+1,newC1,newC2));
+        int[][][] dp = new int[m][n][n];
+        dp[0][0][n-1] = (n != 1) ? grid[0][0] + grid[0][n-1] : grid[0][0];
+        for(int i = 1; i < m; i++){
+            for(int c1 = 0; c1 <= Math.min(i,n-1); c1++){
+                for(int c2 = n-1; c2 >= Math.max(n-i-1,0); c2--){
+                    int prevRowMax = -1;
+                    for(int val1 = c1-1; val1 <= c1+1; val1++){
+                        if(val1 < 0 || val1 >= n) continue;
+                        for(int val2 = c2-1; val2 <= c2+1; val2++){
+                            if(val2 < 0 || val2 >= n) continue;
+                            prevRowMax = Math.max(prevRowMax,dp[i-1][val1][val2]);
+                        }
+                    }
+                    dp[i][c1][c2] = prevRowMax + grid[i][c1];
+                    if(c1 != c2) dp[i][c1][c2] += grid[i][c2];
+                }
             }
         }
-        return dp[row][col1][col2] = ans + pick;
+        int max = -1;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++) max = Math.max(max,dp[m-1][i][j]);
+        }
+        return max;
     }
 }
