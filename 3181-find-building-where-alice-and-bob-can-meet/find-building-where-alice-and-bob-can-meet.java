@@ -2,16 +2,15 @@ class Solution {
     int[] st;
     public int[] leftmostBuildingQueries(int[] heights, int[][] queries) {
         int n = heights.length;
-        for(int[] ele : queries) Arrays.sort(ele);
         int q = queries.length;
         int[] ans = new int[q];
         st = new int[4*n];
         build(heights,0,0,n-1);
         for(int i = 0; i < q; i++){
-            int lo = queries[i][1] + 1;
+            int lo = Math.max(queries[i][0],queries[i][1]) + 1;
             int hi = n - 1;
-            int alice = queries[i][0];
-            int bob = queries[i][1];
+            int alice = Math.min(queries[i][0],queries[i][1]);
+            int bob = Math.max(queries[i][0],queries[i][1]);
             if(alice > bob) ans[i] = -1;
             else if(alice == bob) ans[i] = alice;
             else if(heights[bob] > heights[alice]) ans[i] = bob;
