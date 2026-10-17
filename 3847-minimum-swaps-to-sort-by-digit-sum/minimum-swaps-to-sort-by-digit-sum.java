@@ -1,11 +1,11 @@
 class Solution {
     public int minSwaps(int[] nums) {
         int n = nums.length;
-        Object[] ele = new Object[n];
+        Integer[] ele = new Integer[n];
         for(int i = 0; i < n; i++) ele[i] = nums[i];
         Arrays.sort(ele,(a,b)->{
-            int num1 = (int)a;
-            int num2 = (int)b;
+            int num1 = a;
+            int num2 = b;
             int sum1 = 0;
             int sum2 = 0;
             while(num1 != 0){
@@ -16,10 +16,9 @@ class Solution {
                 sum2 += (num2%10);
                 num2 /= 10;
             }
-            if(sum1 == sum2) return (int)a-(int)b;
+            if(sum1 == sum2) return a-b;
             return sum1-sum2;
         });
-        for(Object val : ele) System.out.print(val+" ");
         HashMap<Integer,Integer> map = new HashMap<>();
         for(int i = 0; i < n; i++) map.put(nums[i],i);
         int ans = 0;
