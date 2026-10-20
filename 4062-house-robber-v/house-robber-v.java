@@ -1,17 +1,13 @@
 class Solution {
-    long[] dp;
     public long rob(int[] nums, int[] colors) {
         int n = nums.length;
-        dp = new long[n+1];
-        Arrays.fill(dp,-1);
-        return maxProfit(nums,colors,0);
-    }
-    public long maxProfit(int[] nums, int[] colors, int i){
-        int n = nums.length;
-        if(i >= n) return 0;
-        if(dp[i] != -1) return dp[i];
-        long skip = maxProfit(nums,colors,i+1);
-        long pick = (i == n - 1 || colors[i+1] == colors[i]) ? nums[i] + maxProfit(nums,colors,i+2) : nums[i] + maxProfit(nums,colors,i+1);
-        return dp[i] = Math.max(pick,skip);
+        long[] dp = new long[n];
+        dp[n-1] = nums[n-1];
+        for(int i = n - 2; i >= 0; i--) {
+            long skip = dp[i+1];
+            long pick = (colors[i+1] == colors[i]) ? nums[i] + (i+2 < n ? dp[i+2] : 0) : nums[i] + dp[i+1];
+            dp[i] = Math.max(skip,pick);
+        }
+        return dp[0];
     }
 }
