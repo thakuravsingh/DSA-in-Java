@@ -74,10 +74,13 @@ class Solution {
             }
         }
         List<Integer> ans = new ArrayList<>();
-        j = 0;
         for(int idx : list1){
-            while(j < list2.size() && list2.get(j) < idx - k) j++; 
-            if(j < list2.size() && list2.get(j) <= idx + k) ans.add(idx);
+            for(j = 0; j < list2.size(); j++){
+                if(Math.abs(idx-list2.get(j)) <= k){
+                    ans.add(idx);
+                    break;
+                }
+            }
         }
         return ans;
     }
